@@ -24,7 +24,7 @@ foreach ($quiz as $index => $q) {
             $expected = $num1 * $num2;
             break;
         case 'divide':
-            $expected = $num2 != 0 ? $num1 / $num2 : 0; // not divide by
+            $expected = $num2 != 0 ? $num1 / $num2 : 0; // not divide by zero
             break;
     }
 
@@ -35,7 +35,24 @@ foreach ($quiz as $index => $q) {
 
 $incorrect = $totalQuestions - $correct;
 $percentage = ($correct / $totalQuestions) * 100;
-?>
+?><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results</title>
+</head>
+<body>
+    <h1>Your Results</h1>
+    <p>Correct Answers: <?= $correct ?></p>
+    <p>Incorrect Answers: <?= $incorrect ?></p>
+    <p>Score Percentage: <?= round($percentage, 2) ?>%</p>
+    <br>
+    <a href="index.php"><button>Try Again</button></a>
+</body>
+</html>
+
+
 
 
 
