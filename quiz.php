@@ -23,4 +23,26 @@ for ($i = 0; $i < $questions; $i++) {
 
 $_SESSION['quiz'] = $quiz;
 
+?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator Quiz</title>
+</head>
+<body>
+    <h1>Answer the Questions</h1>
+    <form method="post" action="results.php">
+        <?php
+        foreach ($quiz as $index => $q) {
+            echo "<p>Question " . ($index + 1) . ": ";
+            echo "{$q['num1']} " . ($operation == 'add' ? '+' : ($operation == 'subtract' ? '-' : ($operation == 'multiply' ? '×' : '÷'))) . " {$q['num2']} = ";
+            echo "<input type='number' name='answers[]' required></p>";
+        }
+        ?>
+        <button type="submit">Submit Answers</button>
+    </form>
+</body>
+</html>
