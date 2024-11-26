@@ -33,3 +33,9 @@ foreach ($quiz as $index => $q) {
     }
 }
 
+$incorrect = $totalQuestions - $correct;
+$percentage = ($correct / $totalQuestions) * 100;
+?>
+
+
+
