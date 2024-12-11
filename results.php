@@ -1,41 +1,27 @@
 <?php
 session_start();
 
-// Retrieve session data
+if (!isset($_SESSION['quiz']) || !isset($_SESSION['answers'])) {
+    header("Location: setup.php");
+    exit;
+}
+
 $quiz = $_SESSION['quiz'];
-$operation = $_SESSION['operation'];
-$answers = $_POST['answers'];
+$answers = $_SESSION['answers'];
 $totalQuestions = count($quiz);
 
-// Calculate correct answers
 $correct = 0;
 foreach ($quiz as $index => $q) {
-    $num1 = $q['num1'];
-    $num2 = $q['num2'];
-
-    switch ($operation) {
-        case 'add':
-            $expected = $num1 + $num2;
-            break;
-        case 'subtract':
-            $expected = $num1 - $num2;
-            break;
-        case 'multiply':
-            $expected = $num1 * $num2;
-            break;
-        case 'divide':
-            $expected = $num2 != 0 ? $num1 / $num2 : 0; // not divide by zero
-            break;
-    }
-
-    if (round($expected) == round($answers[$index])) {
+    if (round($answers[$index], 2) == round($q['correct_answer'], 2)) {
         $correct++;
     }
 }
 
 $incorrect = $totalQuestions - $correct;
 $percentage = ($correct / $totalQuestions) * 100;
-?><!DOCTYPE html>
+?>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -44,15 +30,21 @@ $percentage = ($correct / $totalQuestions) * 100;
 </head>
 <body>
     <h1>Your Results</h1>
-    <p>Correct Answers: <?= $correct ?></p>
-    <p>Incorrect Answers: <?= $incorrect ?></p>
-    <p>Score Percentage: <?= round($percentage, 2) ?>%</p>
+    <p>Correct Answers: <?= htmlspecialchars($correct) ?></p>
+    <p>Incorrect Answers: <?= htmlspecialchars($incorrect) ?></p>
+    <p>Score Percentage: <?= htmlspecialchars(round($percentage, 2)) ?>%</p>
+
+    <?php if ($percentage == 100): ?>
+        <p>Perfect Score! You're a genius!</p>
+    <?php elseif ($percentage >= 75): ?>
+        <p>Great Job! You passed with flying colors!</p>
+    <?php elseif ($percentage >= 50): ?>
+        <p>Not bad! But there's room for improvement.</p>
+    <?php else: ?>
+        <p>Don't give up! Try again and aim for a higher score.</p>
+    <?php endif; ?>
+
     <br>
     <a href="index.php"><button>Try Again</button></a>
 </body>
 </html>
-
-
-
-
-
